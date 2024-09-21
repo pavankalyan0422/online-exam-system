@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Exam</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="text"],
+        input[type="number"],
+        button {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        button {
+            background-color: #ea1111;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #f44b4b;
+        }
+        #questionFields {
+            margin-top: 20px;
+        }
+        #questionFields > div {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <%- include('header.ejs') %>
+    <h1>Create Exam</h1>
+    <form action="/save_exam" method="POST">
+        <label for="examName">Exam Name:</label>
+        <input type="text" id="examName" name="examName" required><br><br>
+
+        <label for="numQuestions">Number of Questions:</label>
+        <input type="number" id="numQuestions" name="numQuestions" min="1" required><br><br>
+
+        <div id="questionFields">
+            <!-- Dynamic question fields will be added here -->
+        </div>
+
+        <button type="submit">Save Exam</button>
+    </form>
+
+    <script>
+        document.getElementById('numQuestions').addEventListener('input', function() {
+            const numQuestions = this.value;
+            const questionFieldsContainer = document.getElementById('questionFields');
+            questionFieldsContainer.innerHTML = ''; // Clear previous fields
+
+            for (let i = 1; i <= numQuestions; i++) {
+                const questionField = document.createElement('div');
+                questionField.innerHTML = `
+                    <label for="id${i}">id ${i}:</label>
+                    <input type="text" id="id${i}" name="id${i}" required><br>
+
+                    <label for="question${i}">Question ${i}:</label>
+                    <input type="text" id="question${i}" name="question${i}" required><br>
+                    
+                    <label for="option1${i}">Option 1:</label>
+                    <input type="text" id="option1${i}" name="option1${i}" required><br>
+                    
+                    <label for="option2${i}">Option 2:</label>
+                    <input type="text" id="option2${i}" name="option2${i}" required><br>
+                    
+                    <label for="option3${i}">Option 3:</label>
+                    <input type="text" id="option3${i}" name="option3${i}" required><br>
+                    
+                    <label for="option4${i}">Option 4:</label>
+                    <input type="text" id="option4${i}" name="option4${i}" required><br>
+                    
+                    <label for="correctAnswer${i}">Correct Answer:</label>
+                    <input type="text" id="correctAnswer${i}" name="correctAnswer${i}" required><br>
+                    <br>
+                `;
+                questionFieldsContainer.appendChild(questionField);
+            }
+        });
+    </script>
+    <%- include('footer.ejs') %>
+</body>
+</html>
+
